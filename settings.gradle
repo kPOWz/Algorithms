@@ -1,0 +1,8 @@
+rootProject.name = 'Algorithms'
+
+include 'percolation'
+
+include 'deques'
+
+include 'randomizedQueues'
+

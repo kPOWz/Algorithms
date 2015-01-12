@@ -1,0 +1,15 @@
+.DS_Store
+/local.properties
+
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+**/.idea/dictionaries
+
+# Gradle:
+**/.idea/gradle.xml
+**/.idea/libraries
+.gradle
+**/build
+
+
+

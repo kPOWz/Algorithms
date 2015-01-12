@@ -1,0 +1,36 @@
+allprojects {
+    task hello << { task -> println "starting $task.project.name" }
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'groovy'
+
+    sourceCompatibility = 1.6
+    version = '1.0'
+
+    repositories {
+        mavenCentral()
+        maven {
+            name 'Algs4 coursera course custom repository'
+            url "https://raw.github.com/slok/algs4-mvn-repo/master"
+        }
+    }
+
+    dependencies {
+        compile 'org.codehaus.groovy:groovy-all:2.1.6'
+        testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+        compile group: 'edu.princeton.cs.introcs', name: 'algs4-package', version: '1.0'
+        compile group: 'edu.princeton.cs.introcs', name: 'stdlib-package', version: '1.0'
+    }
+}
+
+sourceSets {
+    main.java.srcDir "src/main/java"
+    test.java.srcDir "src/test/groovy"
+}
+
+jar {
+    manifest.attributes "Main-Class": "demo.Main"
+    sourceSets.all {
+        from output
+    }
+}
