@@ -6,7 +6,9 @@ import spock.lang.Specification
  * Created by karrie on 1/12/15.
  */
 class DequeTest extends Specification {
-
+    private static final String ONE = "1";
+    private static final String TWO = "2";
+    private static final String THREE = "3";
     private Deque<String> deque;
     def setup() {
         deque = new Deque<String>()
@@ -91,21 +93,21 @@ class DequeTest extends Specification {
 
     def "RemoveFirstTwice"(){
         when:
-        deque.addLast("1")
-        deque.addLast("2")
-        deque.addLast("3")
+        deque.addLast(ONE)
+        deque.addLast(TWO)
+        deque.addLast(THREE)
         def item = deque.removeFirst()
 
         then:
         deque.size() == 2
-        item == "1"
+        item == ONE
 
         when:
         def item2 = deque.removeFirst()
 
         then:
         deque.size() == 1
-        item2 == "2"
+        item2 == TWO
     }
 
     def "RemoveLastEmptyDeque"() {
@@ -127,25 +129,48 @@ class DequeTest extends Specification {
 
     def "RemoveLastTwice"() {
         when:
-        deque.addFirst("3")
-        deque.addFirst("2")
-        deque.addFirst("1")
+        deque.addFirst(THREE)
+        deque.addFirst(TWO)
+        deque.addFirst(ONE)
         def item = deque.removeLast()
 
         then:
         deque.size() == 2
-        item == "3"
+        item == THREE
 
         when:
         def item2 = deque.removeLast()
 
         then:
         deque.size() == 1
-        item2 == "2"
+        item2 == TWO
     }
 
     def "Iterator"() {
+        when:
+        deque.addLast(THREE)
+        deque.addFirst(TWO)
+        deque.addFirst(ONE)
+        def itr = deque.iterator();
 
+        then:
+        assert itr.hasNext()
+        assert itr.next() ==  ONE
+        itr.hasNext()
+        itr.next() == TWO
+        itr.hasNext()
+    }
+
+    def "IteratorEnd"(){
+        when:
+        deque.addLast(ONE)
+        def itr = deque.iterator()
+        itr.next()
+        itr.next()
+
+
+        then:
+        thrown(NoSuchElementException)
     }
 
     def "IteratorRemove"() {

@@ -15,6 +15,7 @@ public class Deque<Item> implements Iterable<Item> {
     private class Node<Item>{
         Item item;
         Node<Item> next;
+        Node<Item> previous;
     }
 
     /*
@@ -51,7 +52,7 @@ public class Deque<Item> implements Iterable<Item> {
         first.next = oldFirst;
         N++;
         if(size() == 1) last = first;
-        if(size() == 2)last.next = first;
+        if(size() == 2)last.previous = first;
 
     }
 
@@ -61,9 +62,10 @@ public class Deque<Item> implements Iterable<Item> {
     public void addLast(Item item)  {
         if(item == null) throw new NullPointerException();
         Node<Item> oldLast = last;
+       // oldLast.previous = null;
         last = new Node<Item>();
         last.item = item;
-        last.next = oldLast; //this is the trick, but will it break the iterator ? 
+        last.previous = oldLast; //--this is the trick, but will it break the iterator ?
         N++;
         if(size() == 1) first = last;
         if(size() == 2)first.next = last;
@@ -87,7 +89,7 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeLast()   {
         if(isEmpty()) throw new NoSuchElementException();
         Item item = last.item;
-        last = last.next;
+        last = last.previous; //changed
         N--;
         if(isEmpty()) first = null;
         return item;
