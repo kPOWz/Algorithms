@@ -5,33 +5,79 @@ import java.util.NoSuchElementException;
 
 /**
  * Created by karrie on 1/11/15.
+ * Must support constant worst-case time.
+ * Must use space proportional to the number of items currently in the deque.
  */
 public class Deque<Item> implements Iterable<Item> {
-    private Node first, last;
-    private class Node{
+    private int N;         // number of elements on queue
+    private Node<Item> first, last;
+    private class Node<Item>{
         Item item;
-        Node next;
+        Node<Item> next;
     }
 
-    public Deque()  {}                         // construct an empty deque
+    public Deque()  {
+        first = null;
+        last  = null;
+        N = 0;
+    }                         // construct an empty deque
 
     public boolean isEmpty(){
-        return  false;
+        return  N < 1;
     }                 // is the deque empty?
     public int size(){
-        return -1;
+        return N;
     }                        // return the number of items on the deque
+
+    /*
+     *  insert the item at the front
+     *  TODO: may need to fill in oldLast here as well...otherwise addfirst & removelast will leave remove last w/out enough info
+     */
     public void addFirst(Item item) {
+        if(item == null) throw new NullPointerException();
+        Node<Item> oldFirst = first;
+        first = new Node<Item>();
+        first.item = item;
+        first.next = oldFirst;
+        N++;
+    }
 
-    }         // insert the item at the front
-    public void addLast(Item item)  {}         // insert the item at the end
+    /*
+    *   insert the item at the end
+    */
+    public void addLast(Item item)  {
+        if(item == null) throw new NullPointerException();
+        Node<Item> oldLast = last;
+        last = new Node<Item>();
+        last.item = item;
+        last.next = oldLast; //this is the trick
+        N++;
+    }
+
+    /*
+    *  delete and return the item at the front
+    */
     public Item removeFirst()       {
+        if(isEmpty()) throw new NoSuchElementException();
+        Item item = first.item;
+        first = first.next;
+        N--;
+        if(isEmpty()) last = null;
+        return item;
+    }
 
-        return first.item;
-    }         // delete and return the item at the front
+    /*
+    *  delete and return the item at the end
+    */
     public Item removeLast()   {
-        return  last.item;
-    }              // delete and return the item at the end
+        if(isEmpty()) throw new NoSuchElementException();
+        Item item = last.item;
+        last = last.next;
+        N--;
+        if(isEmpty()) first = null;
+        return item;
+    }
+
     public Iterator<Item> iterator(){
         return new ListIterator();
     }         // return an iterator over items in order from front to end
@@ -42,7 +88,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     private class ListIterator implements Iterator<Item>{
 
-        private Node current = first;
+        private Node<Item> current = first;
         @Override
         public boolean hasNext() {
             return current != null;

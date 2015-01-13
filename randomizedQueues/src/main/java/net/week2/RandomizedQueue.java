@@ -32,6 +32,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     {
         Item item = first.item;
         first = first.next;
+
         if(isEmpty()) last = null;
         return item;
     }          // delete and return a random item
