@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 /**
  * Created by karrie on 1/11/15.
+ * Must support inserting and removing items from either the front or the back of the data structure
  * Must support constant worst-case time.
  * Must use space proportional to the number of items currently in the deque.
  */
@@ -16,22 +17,31 @@ public class Deque<Item> implements Iterable<Item> {
         Node<Item> next;
     }
 
+    /*
+     construct an empty deque
+     */
     public Deque()  {
         first = null;
         last  = null;
         N = 0;
-    }                         // construct an empty deque
+    }
 
+    /*
+    is the deque empty?
+     */
     public boolean isEmpty(){
         return  N < 1;
-    }                 // is the deque empty?
+    }
+
+    /*
+    return the number of items on the deque
+     */
     public int size(){
         return N;
-    }                        // return the number of items on the deque
+    }
 
     /*
      *  insert the item at the front
-     *  TODO: may need to fill in oldLast here as well...otherwise addfirst & removelast will leave remove last w/out enough info
      */
     public void addFirst(Item item) {
         if(item == null) throw new NullPointerException();
@@ -40,6 +50,9 @@ public class Deque<Item> implements Iterable<Item> {
         first.item = item;
         first.next = oldFirst;
         N++;
+        if(size() == 1) last = first;
+        if(size() == 2)last.next = first;
+
     }
 
     /*
@@ -50,8 +63,10 @@ public class Deque<Item> implements Iterable<Item> {
         Node<Item> oldLast = last;
         last = new Node<Item>();
         last.item = item;
-        last.next = oldLast; //this is the trick
+        last.next = oldLast; //this is the trick, but will it break the iterator ? 
         N++;
+        if(size() == 1) first = last;
+        if(size() == 2)first.next = last;
     }
 
     /*
@@ -78,9 +93,12 @@ public class Deque<Item> implements Iterable<Item> {
         return item;
     }
 
+    /*
+    return an iterator over items in order from front to end
+     */
     public Iterator<Item> iterator(){
         return new ListIterator();
-    }         // return an iterator over items in order from front to end
+    }
 
     /* unit testing */
     public static void main(String[] args){}

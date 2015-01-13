@@ -64,9 +64,6 @@ class DequeTest extends Specification {
         thrown(NullPointerException)
     }
 
-    /*
-    TODO:
-     */
     def "AddLast"() {
         when:
         deque.addLast("hello")
@@ -77,7 +74,7 @@ class DequeTest extends Specification {
 
     def "RemoveFirst"() {
         when:
-        deque.addFirst("hello")
+        deque.addLast("hello")
         deque.removeFirst()
 
         then:
@@ -92,6 +89,25 @@ class DequeTest extends Specification {
         thrown(NoSuchElementException)
     }
 
+    def "RemoveFirstTwice"(){
+        when:
+        deque.addLast("1")
+        deque.addLast("2")
+        deque.addLast("3")
+        def item = deque.removeFirst()
+
+        then:
+        deque.size() == 2
+        item == "1"
+
+        when:
+        def item2 = deque.removeFirst()
+
+        then:
+        deque.size() == 1
+        item2 == "2"
+    }
+
     def "RemoveLastEmptyDeque"() {
         when:
         deque.removeLast()
@@ -102,11 +118,30 @@ class DequeTest extends Specification {
 
     def "RemoveLast"() {
         when:
-        deque.addLast("hello")
+        deque.addFirst("hello")
         deque.removeLast()
 
         then:
         deque.size() == 0
+    }
+
+    def "RemoveLastTwice"() {
+        when:
+        deque.addFirst("3")
+        deque.addFirst("2")
+        deque.addFirst("1")
+        def item = deque.removeLast()
+
+        then:
+        deque.size() == 2
+        item == "3"
+
+        when:
+        def item2 = deque.removeLast()
+
+        then:
+        deque.size() == 1
+        item2 == "2"
     }
 
     def "Iterator"() {
