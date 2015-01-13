@@ -15,10 +15,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         Item item;
         Node next;
     }
+
     public RandomizedQueue()    {}            // construct an empty randomized queue
+
     public boolean isEmpty()     { return  first == null;}            // is the queue empty?
+
     public int size() { return -1;}                        // return the number of items on the queue
+
     public void enqueue(Item item){
+        if(item == null) throw new NullPointerException();
         Node oldLast = last;
         Node last = new Node();
         last.item = item; //some random item?
@@ -27,9 +32,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         else oldLast.next = last;
     }           // add the item (to the beginning?)
 
-//TODO:    set removed item to null to avoid loitering
+    //TODO:    set removed item to null to avoid loitering
     public Item dequeue()
     {
+        if(isEmpty()) throw new NoSuchElementException();
         Item item = first.item;
         first = first.next;
 
@@ -38,12 +44,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }          // delete and return a random item
 
     public Item sample()            {
+        if(isEmpty()) throw new NoSuchElementException();
         return first.item;
     }         // return (but do not delete) a random item
 
     public Iterator<Item> iterator() { return new ListIterator(); } // return an independent iterator over items in random order
+
     public static void main(String[] args)  {} // unit testing
 
+    /*
+    must be mutually independent; each iterator must maintain its own random order.
+     */
     private class ListIterator implements Iterator<Item>{
 
         private Node current = first;
